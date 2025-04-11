@@ -4,14 +4,13 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-// Middleware para leer JSON y URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Lista de productos en memoria
+// lista de productos en memoria
 const productos = [];
 
-// Ruta principal con formulario HTML
+// ruta principal con formulario HTML
 app.get('/', (req, res) => {
     let listaProductos = productos.map(p => `<li>${p.nombre} - $${p.precio}</li>`).join('');
     if (!listaProductos) listaProductos = '<li>No hay productos aún.</li>';
@@ -33,7 +32,7 @@ app.get('/', (req, res) => {
     `);
 });
 
-// Ruta para agregar productos desde formulario
+// ruta para agregar productos desde formulario
 app.post('/productos', (req, res) => {
     const { nombre, precio } = req.body;
     if (!nombre || !precio) {
@@ -43,26 +42,26 @@ app.post('/productos', (req, res) => {
     res.redirect('/');
 });
 
-// Ruta para obtener productos en formato JSON (opcional)
+// ruta para obtener productos en formato JSON (opcional)
 app.get('/api/productos', (req, res) => {
     res.json(productos);
 });
 
-// Iniciar servidor
+// iniciar servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
 
 /*
-Explicación:
+explicación:
 
-Esta implementación es monolítica porque:
-- Toda la lógica (presentación HTML, almacenamiento de datos, manejo de rutas y servidor) está en un solo archivo (app.js).
-- No se separan responsabilidades como vistas, lógica de negocio, y persistencia.
+esta implementación es monolítica porque:
+- toda la lógica (presentación HTML, almacenamiento de datos, manejo de rutas y servidor) está en un solo archivo (app.js).
+- no se separan responsabilidades como vistas, lógica de negocio, y persistencia.
 
-Desventajas:
-- Escalabilidad limitada: conforme el proyecto crezca, este archivo será más difícil de mantener.
-- Difícil de probar: la lógica está acoplada.
-- Reutilización pobre: no se pueden reutilizar fácilmente partes del código.
-- Mantenimiento complejo: cualquier cambio puede afectar a otras partes del código. */
+desventajas:
+- escalabilidad limitada: conforme el proyecto crezca, este archivo será más difícil de mantener.
+- difícil de probar: la lógica está acoplada.
+- reutilización pobre: no se pueden reutilizar fácilmente partes del código.
+- mantenimiento complejo: cualquier cambio puede afectar a otras partes del código. */
